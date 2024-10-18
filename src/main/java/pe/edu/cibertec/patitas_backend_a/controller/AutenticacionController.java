@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pe.edu.cibertec.patitas_backend_a.dto.CloseRequest;
+import pe.edu.cibertec.patitas_backend_a.dto.CloseResponse;
 import pe.edu.cibertec.patitas_backend_a.dto.LoginRequestDTO;
 import pe.edu.cibertec.patitas_backend_a.dto.LoginResponseDTO;
 import pe.edu.cibertec.patitas_backend_a.service.AutenticacionService;
@@ -36,6 +38,18 @@ public class AutenticacionController {
             return new LoginResponseDTO("99", "Error: Ocurrió un problema", "", "");
         }
 
+
+    }
+    @PostMapping("/close")
+    public CloseResponse close(@RequestBody CloseRequest request){
+        try{
+            Thread.sleep(Duration.ofSeconds(3));
+            autenticacionService.cerrarSesion(request);
+            return new CloseResponse("00","");
+        } catch (IOException | InterruptedException e) {
+            System.out.println(e.getMessage());
+            return new CloseResponse("99","Ocurrió un problema en el servidor");
+        }
     }
 
 }
