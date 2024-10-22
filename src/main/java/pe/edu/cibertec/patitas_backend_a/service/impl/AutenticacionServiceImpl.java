@@ -7,6 +7,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import pe.edu.cibertec.patitas_backend_a.dto.CloseRequest;
 import pe.edu.cibertec.patitas_backend_a.dto.LoginRequestDTO;
+import pe.edu.cibertec.patitas_backend_a.dto.RequestClose2;
 import pe.edu.cibertec.patitas_backend_a.service.AutenticacionService;
 
 import java.io.*;
@@ -95,4 +96,19 @@ public class AutenticacionServiceImpl implements AutenticacionService {
         }
 
     }
+
+    @Override
+    public void cerrarSesion2(RequestClose2 request) throws IOException {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
+            // Registra el cierre de sesión
+            String registro = request.tipoDocumento() + ";" + request.numeroDocumento() + ";" + LocalDate.now() + "\n";
+            bw.write(registro);
+            bw.flush();
+            System.out.println("Sesión cerrada: " + registro);
+        } catch (IOException e) {
+            throw new IOException(e);
+        }
+    }
+
+
 }
